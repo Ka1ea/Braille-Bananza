@@ -52,8 +52,8 @@ int num_chars = 20;
 double diameter = 20;
 double circumference = diameter * 3.14159;
 double char_width = 8;
-int new_letter_dist = (circumference / char_width) / 100 * full_rotation;
-c
+// int new_letter_dist = (circumference / char_width) / 100 * full_rotation;
+int new_letter_dist = 286;
 
 void setup() {
   Serial.begin(9600);
@@ -75,10 +75,10 @@ void setup() {
 // START ON LEFT, "A", 
 void loop() {
 
-  u8x8.setFont(u8x8_font_inb46_4x8_n);
+  u8x8.setFont(u8x8_font_inr33_3x6_r);
   u8x8.setCursor(0, 0);
   new_letter = (rand() % num_chars  + min_char) * letter_step;
-  u8x8.print((char) ((new_letter / letter_step) + asci_offset));
+  u8x8.print((char) ((new_letter / letter_step) + ascii_offset));
   
   Serial.println(current_letter);
   Serial.println(new_letter);
@@ -86,16 +86,16 @@ void loop() {
   steps_to_move = new_letter_dist * (current_letter - new_letter);
 
   if (steps_to_move >= 0) {  
-    INCREASING ALPHABET
+    // INCREASING ALPHABET
     move(-steps_to_move, counter_clockwise);
     } else {
-    DECREASING ALPHABET
-    move(steps_to_move, clockwise);
+    // DECREASING ALPHABET
+    move(steps_to_move, clockwise)
   }
 
   delay(1000);
 
-  Read the letter out loud
+  // Read the letter out loud
   for (int i = 0; i < new_letter + 1; i++) {
     beep();
   }
@@ -129,7 +129,6 @@ void loop() {
     delay(100);
     blink(led_pin);
   }
-
   current_letter = new_letter;
 }
 
