@@ -47,7 +47,7 @@ int ascii_offset = 101;
 int steps_to_move = 0;
 int full_rotation = 4096;
 int min_char = 2;
-int num_chars = 20;
+int num_chars = 12;
 
 double diameter = 20;
 double circumference = diameter * 3.14159;
@@ -71,6 +71,8 @@ void setup() {
   // delay(1000);
 }
 
+int old_dir = 0; // left
+float slack_adj = .15;
 
 // START ON LEFT, "A", 
 void loop() {
@@ -85,12 +87,21 @@ void loop() {
   Serial.println("\n");
   steps_to_move = new_letter_dist * (current_letter - new_letter);
 
-  if (steps_to_move >= 0) {  
+  if (steps_to_move >= 0) {
+      // DECREASING ALPHABET
+      if (old_dir == 1) {
+        steps_to_move += full_rotation * slack_adj;
+        old_dir = 0;
+      }
+    move(steps_to_move, clockwise);
+    
+    } else {
+    if (old_dir == 0) {
+        steps_to_move += full_rotation * slack_adj;
+        old_dir = 1;
+    }
     // INCREASING ALPHABET
     move(-steps_to_move, counter_clockwise);
-    } else {
-    // DECREASING ALPHABET
-    move(steps_to_move, clockwise)
   }
 
   delay(1000);
